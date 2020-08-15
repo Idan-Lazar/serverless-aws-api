@@ -1,0 +1,5 @@
+MailQueueIAM:
+  Effect: allow
+  Action:
+    - sqs:ReciveMessage
+  Resoucre: ${self:custom.mailQueue.arn}
