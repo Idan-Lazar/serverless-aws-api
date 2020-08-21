@@ -4,7 +4,7 @@ import { Prompt, Redirect } from 'react-router-dom';
 import {ConfigProvider } from 'antd';
 import heIL from 'antd/es/locale/he_IL'
 import 'antd/dist/antd.css';;
-import { Router, Switch } from "react-router-dom";
+import { Router, Switch , Route } from "react-router-dom";
 import history from "./utils/history";
 import PrivateRoute from "./components/PrivateRoute";
 import AuctionsPage from './pages/AuctionsPage';
@@ -25,6 +25,10 @@ const App = (props) => {
         </header>
         <Switch>
           <PrivateRoute path="/" exact component={AuctionsPage} />
+          <Route exact path="/?code" render={(props) => {
+                alert('dd"');
+            }
+        }/>
           <PrivateRoute path="/auctions" component={AuctionsPage} />
           <PrivateRoute path="/create" component={CreateAuctionPage} />
         </Switch>

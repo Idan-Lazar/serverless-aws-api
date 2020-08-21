@@ -10,3 +10,13 @@
 .login-form-button {
   width: 100%;
 }
+.ant-form-item-control-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+}
+.ant-input-affix-wrapper:hover {
+  border-color: #5270e3 !important;
+  border-right-width: 1px !important;
+}

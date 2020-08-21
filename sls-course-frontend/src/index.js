@@ -27,7 +27,7 @@ ReactDOM.render(
     routerHistory={history}
     overlayStore={OverlayStore}
   >
-    {/* <Auth0Provider
+    {/*  <Auth0Provider
       authStore={AuthStore}
       domain={process.env.REACT_APP_AUTH0_DOMAIN}
       client_id={process.env.REACT_APP_AUTH0_CLIENT_ID}
@@ -35,7 +35,7 @@ ReactDOM.render(
       onRedirectCallback={onRedirectCallback}
     > */}
       <App />
-    {/* </Auth0Provider> */}
+     {/* </Auth0Provider>  */}
   </Provider>,
   document.getElementById("root")
 );

@@ -2,26 +2,20 @@ import React from "react";
 import { Modal, Form, Input, Button, Checkbox } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import { inject, observer } from "mobx-react";
-import queryString from 'query-string';
 import "./LoginModal.scss";
-import Axios from 'axios';
-
-const LoginModal = (props) => {
-  const { authStore, visloginModal, setVisLoginModal , routerHistory } = props;
+const RegistarModal = (props) => {
+  const { authStore, visRegistarModal, setVisRegistarModal } = props;
   const onFinish = async (values) => {
-    await authStore.signIn(values.email,values.password,values.remember).then(()=>{
-        setVisLoginModal(false)
+    await authStore.signUp(values.email,values.password,values.remember).then(()=>{
+        setVisRegistarModal(false)
     })
   };
-  const Social = async (social) =>{
-    window.location.href = `https://sls-project.eu.auth0.com/authorize?response_type=code&client_id=ebvnIdewrkmc55kM5swdczoeMQbKG6Ru&connection=${social}&redirect_uri=http://localhost:3000/&scope=openid%20name%20email`
-  }
   return (
     <Modal
-      title="כניסה למערכת"
-      visible={visloginModal}
+      title="הרשמה למערכת"
+      visible={visRegistarModal}
       footer={null}
-      onCancel={() => setVisLoginModal(false)}
+      onCancel={() => setVisRegistarModal(false)}
     >
       <Form
         name="normal_login"
@@ -78,12 +72,12 @@ const LoginModal = (props) => {
             htmlType="submit"
             className="login-form-button"
           >
-            התחבר
+            הרשם
           </Button>
-          או <div onClick={()=> Social('github')}>הרשם</div>
+          או <a href="">התחבר</a>
         </Form.Item>
       </Form>
     </Modal>
   );
 };
-export default inject("authStore","routerHistory")(observer(LoginModal));
+export default inject("authStore")(observer(RegistarModal));

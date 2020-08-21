@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { inject, observer } from "mobx-react";
 import Auction from "../components/Auction";
 import BidModal from "../components/BidModal";
-import { Fab, makeStyles } from "@material-ui/core";
+import { Fab, makeStyles, ListItemText } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import LoadingSpinner from "../components/LoadingSpinner";
 
@@ -40,11 +40,12 @@ const useStyles = makeStyles({
 const AuctionsPage = (props) => {
   const { auctionStore, authStore, routerHistory } = props;
   const classes = useStyles();
-console.log(authStore)
+  console.log(authStore);
   useEffect(() => {
+    let intervalId;
     (async () => {
       await auctionStore.fetchAuctions();
-      setInterval(() => {
+      intervalId = setInterval(() => {
         if (
           routerHistory.location.pathname === "/auctions" ||
           routerHistory.location.pathname === "/"
@@ -53,11 +54,11 @@ console.log(authStore)
         }
       }, process.env.REACT_APP_REFRESH_RATE);
     })();
+    return () => clearInterval(intervalId);
   }, [auctionStore, routerHistory]);
 
   const renderAuctions = () => {
-    const { auctions, loading } = auctionStore;
-    console.log(loading)
+    const { auctions, loading , claims } = auctionStore;
     if (loading) {
       return;
     }

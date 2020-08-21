@@ -1,7 +1,10 @@
-import React, { useState } from "react";
-import { inject } from "mobx-react";
+import React, { useState, useEffect } from "react";
+import { inject, observer } from "mobx-react";
 import { makeStyles, Button } from "@material-ui/core";
 import LoginModal from "../modals/LoginModal";
+import RegistarModal from "../modals/RegistarModal";
+import { Link } from "react-router-dom";
+
 const useStyles = makeStyles({
   navbar: {
     background:
@@ -27,11 +30,23 @@ const useStyles = makeStyles({
   },
 });
 
-const NavBar = ({ authStore }) => {
-  const isAuthenticated = authStore.token;
+const NavBar = ({ authStore, routerHistory }) => {
   const [visloginModal, setVisLoginModal] = useState(false);
-
+  const [visRegistarModal, setVisRegistarModal] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    authStore.token ? true : false
+  );
   const classes = useStyles();
+
+  useEffect(() => {
+    setIsAuthenticated(authStore.token ? true : false);
+    setVisLoginModal(false)
+  }, [authStore.token]);
+
+  const signOut = () => {
+    authStore.signOut();
+     routerHistory.push('/'); 
+  };
 
   return (
     <div className={classes.navbar}>
@@ -39,28 +54,40 @@ const NavBar = ({ authStore }) => {
         <h1 style={{ fontSize: 14, color: "white" }}>THE AUCTION HOUSE</h1>
       </div>
       <div className={classes.loginLogoutContainer}>
-        {
+
+        {!isAuthenticated && (
           <Button
             className={classes.button}
             onClick={() => setVisLoginModal(true)}
           >
             Sign in
           </Button>
-        }
-        {<Button className={classes.button}>Sign Up</Button>}
-
-        {isAuthenticated && (
+        )}
+        {!isAuthenticated && (
           <Button
             className={classes.button}
-             onClick={() => authStore.signOut({})}
+            onClick={() => setVisRegistarModal(true)}
           >
+            Sign Up
+          </Button>
+        )}
+
+        {isAuthenticated && (
+          <Button className={classes.button} onClick={() => signOut()}>
             Sign out
           </Button>
         )}
       </div>
-      <LoginModal visloginModal={visloginModal} setVisLoginModal={setVisLoginModal}/>
+      <LoginModal
+        visloginModal={visloginModal}
+        setVisLoginModal={setVisLoginModal}
+      />
+      <RegistarModal
+        visRegistarModal={visRegistarModal}
+        setVisRegistarModal={setVisRegistarModal}
+      />
     </div>
   );
 };
 
-export default inject(["authStore"])(NavBar);
+export default inject("authStore", "routerHistory")(observer(NavBar));
