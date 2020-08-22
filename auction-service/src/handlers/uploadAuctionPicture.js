@@ -11,10 +11,10 @@ import uploadAuctionPictureSchema from "../lib/schemas/uploadAuctionPictureSchem
 export async function uploadAuctionPicture(event) {
   const { id } = event.pathParameters;
   const auction = await getAuctionById(id);
-  const { email } = event.requestContext.authorizer;
+  const { sub } = event.requestContext.authorizer;
 
   //Validate auction ownership
-  if (auction.seller !== email) {
+  if (auction.seller !== sub) {
     throw new createError.Forbidden(`You are not the seller`);
   }
 
